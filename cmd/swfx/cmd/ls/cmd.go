@@ -16,9 +16,8 @@ var lsCmd = &cobra.Command{
 	Use:   "ls",
 	Short: "List tags from a SWF file.",
 	Run: func(cmd *cobra.Command, args []string) {
-
-		if len(args) < 1 {
-			fmt.Fprintf(cmd.ErrOrStderr(), "no file specified")
+		if len(args) == 0 {
+			cmd.Help()
 			return
 		}
 
