@@ -9,10 +9,11 @@ import (
 )
 
 type Swf struct {
-	Header     SwfHeader
-	Tags       []SwfTag
-	Characters map[int]CharacterTag
-	Symbols    map[string]int
+	Header         SwfHeader
+	Tags           []SwfTag
+	Characters     map[CharacterId]CharacterTag
+	Symbols        map[string]CharacterId
+	ReverseSymbols map[CharacterId][]string
 }
 
 func NewSwf() *Swf {
@@ -42,10 +43,11 @@ func ReadSwf(reader io.Reader) (swf *Swf, err error) {
 	}
 
 	swf = &Swf{
-		Header:     header,
-		Tags:       []SwfTag{},
-		Characters: map[int]CharacterTag{},
-		Symbols:    map[string]int{},
+		Header:         header,
+		Tags:           []SwfTag{},
+		Characters:     map[CharacterId]CharacterTag{},
+		Symbols:        map[string]CharacterId{},
+		ReverseSymbols: map[CharacterId][]string{},
 	}
 
 	for {
@@ -57,6 +59,7 @@ func ReadSwf(reader io.Reader) (swf *Swf, err error) {
 		if tag, ok := tag.(*SymbolClass); ok {
 			for name, id := range tag.Symbols {
 				swf.Symbols[name] = id
+				swf.ReverseSymbols[id] = append(swf.ReverseSymbols[id], name)
 			}
 		}
 		swf.Tags = append(swf.Tags, tag)
