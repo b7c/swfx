@@ -12,7 +12,7 @@ type Swf struct {
 	Header     SwfHeader
 	Tags       []SwfTag
 	Characters map[int]CharacterTag
-	Symbols    map[int]string
+	Symbols    map[string]int
 }
 
 func NewSwf() *Swf {
@@ -45,7 +45,7 @@ func ReadSwf(reader io.Reader) (swf *Swf, err error) {
 		Header:     header,
 		Tags:       []SwfTag{},
 		Characters: map[int]CharacterTag{},
-		Symbols:    map[int]string{},
+		Symbols:    map[string]int{},
 	}
 
 	for {
@@ -55,8 +55,8 @@ func ReadSwf(reader io.Reader) (swf *Swf, err error) {
 			swf.Characters[tag.CharacterId()] = tag
 		}
 		if tag, ok := tag.(*SymbolClass); ok {
-			for id, name := range tag.Names {
-				swf.Symbols[id] = name
+			for name, id := range tag.Symbols {
+				swf.Symbols[name] = id
 			}
 		}
 		swf.Tags = append(swf.Tags, tag)
