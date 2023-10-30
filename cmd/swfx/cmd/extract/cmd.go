@@ -84,38 +84,41 @@ func init() {
 }
 
 func extractBitsLossless2(swf *swfx.Swf, tag *swfx.DefineBitsLossless2) error {
-	var name string
+	var names []string
 	var ok bool
-	if name, ok = swf.Symbols[tag.CharacterId()]; !ok {
-		name = strconv.Itoa(tag.CharacterId())
+	if names, ok = swf.ReverseSymbols[tag.CharacterId()]; !ok {
+		names = []string{strconv.Itoa(int(tag.CharacterId()))}
 	}
-	outputFile := path.Join(outputDir, fmt.Sprintf("%s.png", name))
-	img, err := tag.Decode()
-	if err != nil {
-		return fmt.Errorf("failed to decode tag (%d): %s",
-			tag.CharacterId(), err)
-	}
-	f, err := os.OpenFile(outputFile, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0755)
-	if err != nil {
-		return fmt.Errorf("failed to open file: %q", outputFile)
-	}
-	defer f.Close()
-	err = png.Encode(f, img)
-	if err != nil {
-		return fmt.Errorf("failed to encode image: %s", err)
-	}
-	extractCount++
-	if !quiet {
-		fmt.Println(outputFile)
+
+	for _, name := range names {
+		outputFile := path.Join(outputDir, name+".png")
+		img, err := tag.Decode()
+		if err != nil {
+			return fmt.Errorf("failed to decode tag (%d): %s",
+				tag.CharacterId(), err)
+		}
+		f, err := os.OpenFile(outputFile, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0755)
+		if err != nil {
+			return fmt.Errorf("failed to open file: %q", outputFile)
+		}
+		defer f.Close()
+		err = png.Encode(f, img)
+		if err != nil {
+			return fmt.Errorf("failed to encode image: %s", err)
+		}
+		extractCount++
+		if !quiet {
+			fmt.Println(outputFile)
+		}
 	}
 	return nil
 }
 
 func extractBitsJpeg2(swf *swfx.Swf, tag *swfx.DefineBitsJpeg2) error {
-	var name string
+	var names []string
 	var ok bool
-	if name, ok = swf.Symbols[tag.CharacterId()]; !ok {
-		name = fmt.Sprintf("%d", tag.CharacterId())
+	if names, ok = swf.ReverseSymbols[tag.CharacterId()]; !ok {
+		names = []string{fmt.Sprintf("%d", tag.CharacterId())}
 	}
 	var ext string
 	switch tag.ImageType() {
@@ -128,47 +131,52 @@ func extractBitsJpeg2(swf *swfx.Swf, tag *swfx.DefineBitsJpeg2) error {
 	default:
 		return fmt.Errorf("unknown image type")
 	}
-	outputFile := path.Join(outputDir, name+ext)
-	f, err := os.OpenFile(outputFile, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0755)
-	if err != nil {
-		return fmt.Errorf("failed to open file: %q", outputFile)
-	}
-	defer f.Close()
-	n, err := f.Write(tag.ImageData)
-	if n < len(tag.ImageData) {
-		return fmt.Errorf("failed to write all data")
-	}
-	extractCount++
-	if !quiet {
-		fmt.Println(outputFile)
+	for _, name := range names {
+		outputFile := path.Join(outputDir, name+ext)
+		f, err := os.OpenFile(outputFile, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0755)
+		if err != nil {
+			return fmt.Errorf("failed to open file: %q", outputFile)
+		}
+		defer f.Close()
+		n, err := f.Write(tag.ImageData)
+		if n < len(tag.ImageData) {
+			return fmt.Errorf("failed to write all data")
+		}
+		extractCount++
+		if !quiet {
+			fmt.Println(outputFile)
+		}
 	}
 	return nil
 }
 
 func extractBinaryData(swf *swfx.Swf, tag *swfx.DefineBinaryData) error {
-	var name string
+	var names []string
 	var ok bool
-	if name, ok = swf.Symbols[tag.CharacterId()]; !ok {
-		name = strconv.Itoa(tag.CharacterId())
+	if names, ok = swf.ReverseSymbols[tag.CharacterId()]; !ok {
+		names = []string{strconv.Itoa(int(tag.CharacterId()))}
 	}
 
 	mtype := mimetype.Detect(tag.Data)
 	ext := mtype.Extension()
-	outputFile := path.Join(outputDir, name+ext)
 
-	f, err := os.OpenFile(outputFile, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0755)
-	if err != nil {
-		return fmt.Errorf("failed to open file: %q", outputFile)
-	}
-	defer f.Close()
+	for _, name := range names {
+		outputFile := path.Join(outputDir, name+ext)
 
-	n, err := f.Write(tag.Data)
-	if n < len(tag.Data) {
-		return fmt.Errorf("failed to write all data")
-	}
-	extractCount++
-	if !quiet {
-		fmt.Println(outputFile)
+		f, err := os.OpenFile(outputFile, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0755)
+		if err != nil {
+			return fmt.Errorf("failed to open file: %q", outputFile)
+		}
+		defer f.Close()
+
+		n, err := f.Write(tag.Data)
+		if n < len(tag.Data) {
+			return fmt.Errorf("failed to write all data")
+		}
+		extractCount++
+		if !quiet {
+			fmt.Println(outputFile)
+		}
 	}
 	return nil
 }
