@@ -9,10 +9,12 @@ type SwfTag interface {
 	Code() tagcode.TagCode
 }
 
+type CharacterId int
+
 type CharacterTag interface {
 	SwfTag
-	CharacterId() int
-	SetCharacterId(id int)
+	CharacterId() CharacterId
+	SetCharacterId(id CharacterId)
 }
 
 type SwfTagStruct struct {
@@ -45,19 +47,19 @@ func (tag *ArbitraryTag) readData(r SwfReader, length int) {
 }
 
 type characterTag struct {
-	characterId int
+	characterId CharacterId
 }
 
-func (tag *characterTag) CharacterId() int {
+func (tag *characterTag) CharacterId() CharacterId {
 	return tag.characterId
 }
 
-func (tag *characterTag) SetCharacterId(id int) {
+func (tag *characterTag) SetCharacterId(id CharacterId) {
 	tag.characterId = id
 }
 
 func (tag *characterTag) readData(r SwfReader, length int) {
-	tag.characterId = int(r.ReadUint16())
+	tag.characterId = CharacterId(r.ReadUint16())
 }
 
 func MakeTag(code tagcode.TagCode) SwfTag {
