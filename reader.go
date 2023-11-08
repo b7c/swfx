@@ -1,6 +1,7 @@
 package swfx
 
 import (
+	"bufio"
 	"compress/zlib"
 	"encoding/binary"
 	"errors"
@@ -79,14 +80,16 @@ func (r *swfReader) Read(p []byte) (int, error) {
 
 func (r *swfReader) MustRead(p []byte) {
 	read := 0
+	var n int
+	var err error
 	for read < len(p) {
-		n, err := r.Read(p[read:])
 		if err != nil {
 			if errors.Is(err, io.EOF) {
 				err = io.ErrUnexpectedEOF
 			}
 			panic(err)
 		}
+		n, err = r.Read(p[read:])
 		read += n
 	}
 }
@@ -131,10 +134,7 @@ func (r *swfReader) ReadRect() Rect {
 }
 
 func (r *swfReader) fill(count int) {
-	n, err := r.Read(r.buf[:count])
-	if n < count || (err != nil && !errors.Is(err, io.EOF)) {
-		panic(err)
-	}
+	r.MustRead(r.buf[:count])
 }
 
 func (r *swfReader) ReadUint8() uint8 {
@@ -222,6 +222,12 @@ func ReadHeader(r SwfReader) (header SwfHeader, err error) {
 	}
 	switch buf[0] {
 	case 'F':
+		r.WrapInnerStream(func(inner io.Reader) io.Reader {
+			if _, ok := inner.(*bufio.Reader); !ok {
+				inner = bufio.NewReader(inner)
+			}
+			return inner
+		})
 	case 'C':
 		r.WrapInnerStream(func(inner io.Reader) io.Reader {
 			inner, err = zlib.NewReader(inner)
