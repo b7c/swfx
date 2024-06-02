@@ -3,9 +3,9 @@ module github.com/b7c/swfx/cmd/swfx
 go 1.21.1
 
 require (
+	github.com/b7c/swfx v0.0.0-20240111050642-66a733ef2511
 	github.com/gabriel-vasile/mimetype v1.4.3
 	github.com/spf13/cobra v1.7.0
-	github.com/b7c/swfx v0.0.0-20231027223537-b437ec2aee4d
 )
 
 require (
