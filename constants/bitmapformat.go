@@ -1,3 +1,5 @@
+//go:generate stringer -type=BitmapFormat
+
 package constants
 
 type BitmapFormat int
