@@ -97,12 +97,19 @@ func runLs(cmd *cobra.Command, args []string) (err error) {
 			offset := reader.Position()
 			tagCode, length := reader.ReadTagCodeAndLength()
 			tagName := tagCode.String()
+			tag := reader.ReadTag(tagCode, length)
+
 			if strings.ContainsRune(tagName, '(') {
-				fmt.Printf("0x%08x %8d %s\n", offset, length, tagCode)
+				fmt.Printf("0x%08x %8d %s", offset, length, tagCode)
 			} else {
-				fmt.Printf("0x%08x %8d %s (%d)\n", offset, length, tagCode, tagCode)
+				fmt.Printf("0x%08x %8d %s (%d)", offset, length, tagCode, tagCode)
 			}
-			reader.ReadTag(tagCode, length)
+
+			if chrTag, ok := tag.(swfx.CharacterTag); ok {
+				fmt.Printf(" [%d]", chrTag.CharacterId())
+			}
+			fmt.Println()
+
 			if tagCode == tagcode.End {
 				break
 			}
