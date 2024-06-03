@@ -8,8 +8,8 @@ import (
 	"image/color"
 	"io"
 
-	"github.com/b7c/swfx/constants"
-	"github.com/b7c/swfx/tagcode"
+	"b7c.io/swfx/constants"
+	"b7c.io/swfx/tagcode"
 )
 
 type DefineBitsLossless2 struct {

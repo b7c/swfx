@@ -8,9 +8,10 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/b7c/swfx"
-	"github.com/b7c/swfx/cmd/swfx/cmd"
-	"github.com/b7c/swfx/tagcode"
+	"b7c.io/swfx"
+	"b7c.io/swfx/tagcode"
+
+	root "b7c.io/swfx/cmd/swfx/cmd"
 )
 
 var lsCmd = &cobra.Command{
@@ -24,7 +25,7 @@ var (
 )
 
 func init() {
-	cmd.RootCmd.AddCommand(lsCmd)
+	root.RootCmd.AddCommand(lsCmd)
 
 	lsCmd.Flags().BoolVarP(&listSymbols, "symbols", "s", false, "List symbols")
 }

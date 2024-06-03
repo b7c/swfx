@@ -7,7 +7,7 @@ import (
 	"errors"
 	"io"
 
-	"github.com/b7c/swfx/tagcode"
+	"b7c.io/swfx/tagcode"
 )
 
 type SwfReader interface {

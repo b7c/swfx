@@ -3,7 +3,7 @@ package swfx
 import (
 	"fmt"
 
-	"github.com/b7c/swfx/tagcode"
+	"b7c.io/swfx/tagcode"
 )
 
 type SymbolClass struct {

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/b7c/swfx/tagcode"
+	"b7c.io/swfx/tagcode"
 )
 
 type Swf struct {

@@ -1,6 +1,6 @@
 package swfx
 
-import "github.com/b7c/swfx/tagcode"
+import "b7c.io/swfx/tagcode"
 
 type FileAttributes struct {
 	UseDirectBlit      bool

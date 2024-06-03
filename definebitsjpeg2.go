@@ -3,7 +3,7 @@ package swfx
 import (
 	"bytes"
 
-	"github.com/b7c/swfx/tagcode"
+	"b7c.io/swfx/tagcode"
 )
 
 type ImageType int

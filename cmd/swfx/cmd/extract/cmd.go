@@ -12,9 +12,10 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/b7c/swfx"
-	"github.com/b7c/swfx/cmd/swfx/cmd"
-	"github.com/b7c/swfx/tagcode"
+	"b7c.io/swfx"
+	"b7c.io/swfx/tagcode"
+
+	root "b7c.io/swfx/cmd/swfx/cmd"
 )
 
 var (
@@ -48,7 +49,7 @@ var extractCmd = &cobra.Command{
 				cmd.Println(err)
 			}
 		}
-		
+
 		cmd.Printf("\nExtracted %d file%s.\n", extractCount, pluralize(extractCount))
 		for code, count := range extractCounts {
 			cmd.Printf("* %s: %d\n", code, count)
@@ -57,7 +58,7 @@ var extractCmd = &cobra.Command{
 }
 
 func init() {
-	cmd.RootCmd.AddCommand(extractCmd)
+	root.RootCmd.AddCommand(extractCmd)
 
 	extractCmd.Flags().StringVarP(&baseOutDir, "output", "o", "", "The output directory. Creates a directory with the same name as the SWF file without the extension by default.")
 	extractCmd.Flags().BoolVarP(&extractAll, "all", "a", false, "Extract all resources.")
@@ -79,12 +80,12 @@ func extractSwf(cmd *cobra.Command, fileName string) error {
 		return err
 	}
 	defer f.Close()
-	
+
 	stat, err := f.Stat()
 	if err != nil {
 		return err
 	}
-	
+
 	if stat.IsDir() {
 		return fmt.Errorf("input must be a file")
 	}

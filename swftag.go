@@ -1,7 +1,7 @@
 package swfx
 
 import (
-	"github.com/b7c/swfx/tagcode"
+	"b7c.io/swfx/tagcode"
 )
 
 type SwfTag interface {
