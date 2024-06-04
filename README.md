@@ -26,18 +26,18 @@ $ swfx ls duck.swf
 0x000001f2        3 SetBackgroundColor (9)
 0x000001f7       26 TagCode(41)
 0x00000213        5 FrameLabel (43)
-0x0000021a      129 DefineBinaryData (87)
-0x000002a1      766 DefineBinaryData (87)
-0x000005a5     1145 DefineBinaryData (87)
-0x00000a24       26 DefineBitsLossless2 (36)
-0x00000a44      117 DefineBitsLossless2 (36)
-0x00000abf      233 DefineBitsLossless2 (36)
-0x00000bae      766 DefineBinaryData (87)
-0x00000eb2      292 DefineBinaryData (87)
-0x00000fdc       91 DefineBitsLossless2 (36)
-0x0000103d       38 DefineBitsLossless2 (36)
-0x00001069      175 DefineBitsLossless2 (36)
-0x0000111e      238 DefineBitsLossless2 (36)
+0x0000021a      129 DefineBinaryData (87) [1]
+0x000002a1      766 DefineBinaryData (87) [2]
+0x000005a5     1145 DefineBinaryData (87) [3]
+0x00000a24       26 DefineBitsLossless2 (36) [4]
+0x00000a44      117 DefineBitsLossless2 (36) [5]
+0x00000abf      233 DefineBitsLossless2 (36) [6]
+0x00000bae      766 DefineBinaryData (87) [7]
+0x00000eb2      292 DefineBinaryData (87) [8]
+0x00000fdc       91 DefineBitsLossless2 (36) [9]
+0x0000103d       38 DefineBitsLossless2 (36) [10]
+0x00001069      175 DefineBitsLossless2 (36) [11]
+0x0000111e      238 DefineBitsLossless2 (36) [12]
 0x00001212     5169 TagCode(82)
 0x00002649      248 SymbolClass (76)
 0x00002747        0 ShowFrame (1)
